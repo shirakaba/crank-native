@@ -14,7 +14,7 @@ A [`crank.js`](https://github.com/bikeshaving/crank) custom renderer for iOS and
 
 This renderer is under construction, and not ready for use yet! Find out more by contacting [@LinguaBrowse](https://twitter.com/LinguaBrowse) on Twitter.
 
-## Description of Crank
+## About Crank
 
 > Write JSX-driven components with functions, promises and generators.
 >
