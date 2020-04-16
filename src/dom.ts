@@ -8,7 +8,7 @@ import {
 	Renderer,
 	Portal,
 } from "@bikeshaving/crank/cjs/index";
-import { setValueForProperty } from "./NativeScriptPropertyOperations";
+import { setValueForProperty } from "./nativescriptDomInterface/NativeScriptPropertyOperations";
 import { Instance, HostContext as RNSHostContext, TextInstance } from "./nativescriptDomInterface/HostConfigTypes";
 import { StackLayout, LayoutBase, GridLayout, View, ViewBase, Page, ActionBar, ActionItem, NavigationButton, TabView, TabViewItem, ContentView, ScrollView, ProxyViewContainer, Builder, TextBase, Span } from "@nativescript/core";
 

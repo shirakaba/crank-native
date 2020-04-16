@@ -1,5 +1,5 @@
 import { TextBase } from "tns-core-modules/ui/text-base/text-base";
-import { setValueForStyles } from "./nativescriptDomInterface/CSSPropertyOperations";
+import { setValueForStyles } from "./CSSPropertyOperations";
 import { DockLayout, dockProperty } from "tns-core-modules/ui/layouts/dock-layout/dock-layout";
 import { View, classNameProperty } from "tns-core-modules/ui/core/view/view";
 import {
@@ -21,9 +21,9 @@ import {
     orderProperty,
 } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import { isIOS, isAndroid } from "tns-core-modules/platform/platform";
-import * as console from "./Logger";
+import * as console from "../Logger";
 import { rnsDeletedPropValue } from "./magicValues";
-import { Instance, HostContext } from "./nativescriptDomInterface/HostConfigTypes";
+import { Instance, HostContext } from "./HostConfigTypes";
 
 /**
  * Code in here referenced from: https://github.com/facebook/react/blob/master/packages/react-dom/src/client/DOMPropertyOperations.js which carries the following copyright:
