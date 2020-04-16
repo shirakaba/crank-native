@@ -1,4 +1,4 @@
-import { Instance } from "./HostConfigTypes";
+import { Instance } from "../HostConfigTypes";
 import { Style } from "tns-core-modules/ui/styling/style/style";
 
 /**

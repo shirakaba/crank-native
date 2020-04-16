@@ -1,5 +1,5 @@
 import { TextBase } from "tns-core-modules/ui/text-base/text-base";
-import { setValueForStyles } from "./CSSPropertyOperations";
+import { setValueForStyles } from "./nativescriptDomInterface/CSSPropertyOperations";
 import { DockLayout, dockProperty } from "tns-core-modules/ui/layouts/dock-layout/dock-layout";
 import { View, classNameProperty } from "tns-core-modules/ui/core/view/view";
 import {
