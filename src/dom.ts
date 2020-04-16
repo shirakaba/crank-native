@@ -10,7 +10,7 @@ import {
 } from "@bikeshaving/crank/cjs/index";
 import { setValueForProperty } from "./NativeScriptPropertyOperations";
 import { Instance, HostContext as RNSHostContext, TextInstance } from "./HostConfigTypes";
-import { StackLayout, LayoutBase, GridLayout, View, ViewBase, Page, ActionBar, ActionItem, NavigationButton, TabView, TabViewItem, ContentView, ScrollView } from "@nativescript/core";
+import { StackLayout, LayoutBase, GridLayout, View, ViewBase, Page, ActionBar, ActionItem, NavigationButton, TabView, TabViewItem, ContentView, ScrollView, ProxyViewContainer, Builder, TextBase, Span } from "@nativescript/core";
 
 const rootHostContext: RNSHostContext = {
     isInAParentText: false,
@@ -26,7 +26,7 @@ const rootHostContext: RNSHostContext = {
 // 	interface EventMap extends GlobalEventHandlersEventMap {}
 // }
 
-// TODO: create an allowlist/blocklist of props
+// TODO @bikeshaving: create an allowlist/blocklist of props
 function updateProps(el: Instance, props: Props, newProps: Props): void {
     for (const name in {...props, ...newProps}) {
         const value = props[name];
@@ -275,66 +275,94 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
 
 // TODO: improve this algorithm
 // https://stackoverflow.com/questions/59418120/what-is-the-most-efficient-way-to-update-the-childnodes-of-a-dom-node-with-an-ar
-function updateChildren(el: Element, children: Array<Node | string>): void {
+function updateChildren(el: Instance, children: Array<View | string>): void {
     // TODO @shirakaba: re-implement for NativeScript!
 
-	if (el.childNodes.length === 0) {
-		const fragment = document.createDocumentFragment();
-		for (let child of children) {
-			if (typeof child === "string") {
-				child = document.createTextNode(child);
-			}
+    const oldChildren = [];
+    /* Yes, there is no el.length for ViewBase. There is _childrenCount() for LayoutBase, however. */
+    el.eachChild((child: ViewBase) => {
+        oldChildren.push(child);
+        return true;
+    });
 
-			fragment.appendChild(child);
-		}
+	if (oldChildren.length === 0) {
+        // const fragment = new ProxyViewContainer();
+        const childrenToAdd = [];
+        for (let child of children) {
+			if (typeof child === "string" || typeof child === "number") {
+                if(el instanceof TextBase || el instanceof Span){
+                    el.text = child.toString();
+                } else {
+                    throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+                }
+			} else {
+                // fragment.addChild(child);
+            }
+        }
+        
+        /* Very low likelihood of ProxyViewContainer working for all cases of JSX.
+         * I'll use my custom appendChild() implementation instead. */
+        // appendChild(el, fragment);
 
-		el.appendChild(fragment);
+        childrenToAdd.forEach((child) => {
+            appendChild(el, child);
+        });
+
 		return;
-	}
+    }
 
-	let oldChild = el.firstChild;
+    let i: number = 0;
+    let oldChild: Instance|null = oldChildren[i] || null;
 	for (const newChild of children) {
 		if (oldChild === null) {
-			el.appendChild(
-				typeof newChild === "string"
-					? document.createTextNode(newChild)
-					: newChild,
-			);
-		} else if (typeof newChild === "string") {
-			if (oldChild.nodeType === Node.TEXT_NODE) {
-				if (oldChild.nodeValue !== newChild) {
-					oldChild.nodeValue = newChild;
-				}
+            if(typeof newChild === "string" || typeof newChild === "number"){
+                if(el instanceof TextBase || el instanceof Span){
+                    el.text = newChild.toString();
+                } else {
+                    throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+                }
+            } else {
+                appendChild(el, newChild);
+            }
+		} else if (typeof newChild === "string" || typeof newChild === "number") {
+            /**
+             * NativeScript simply doesn't support text nodes to the level that DOM does.
+             * i.e. you can't have ViewBases as siblings to text nodes; it's one or the other.
+             * In fact, text nodes in NativeScript Core are simply ignored.
+             * Essentially, mapping this aspect 1:1 with the DOM renderer is not possible here.
+             */
 
-				oldChild = oldChild.nextSibling;
-			} else {
-				el.insertBefore(document.createTextNode(newChild), oldChild);
-			}
+            if(el instanceof TextBase || el instanceof Span){
+                el.text = newChild.toString();
+            } else {
+                throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+            }
 		} else if (oldChild !== newChild) {
-			el.insertBefore(newChild, oldChild);
+            insertBefore(el, newChild, oldChild);
 		} else {
-			oldChild = oldChild.nextSibling;
+            i++;
+			oldChild = oldChildren[i] || null;
 		}
 	}
 
 	while (oldChild !== null) {
-		const nextSibling = oldChild.nextSibling;
-		el.removeChild(oldChild);
+        i++;
+        const nextSibling = oldChildren[i] || null;
+        if(oldChild !== null){
+            removeChild(el, oldChild);
+        }
 		oldChild = nextSibling;
 	}
 }
 
-function createDocumentFragmentFromHTML(html: string): DocumentFragment {
-    // TODO @shirakaba: determine what should be implemented, analogous to a document fragment.
-	if (typeof document.createRange === "function") {
-		return document.createRange().createContextualFragment(html);
+function createDocumentFragmentFromXML(xml: string): ProxyViewContainer {
+	if (document && typeof document.createRange === "function") {
+        // @shirakaba: I have no idea what document.createRange, so no idea how to translate to NativeScript, sadly!
+        return new ProxyViewContainer();
 	} else {
-		const fragment = document.createDocumentFragment();
-		const childNodes = new DOMParser().parseFromString(html, "text/html").body
-			.childNodes;
-		for (let i = 0; i < childNodes.length; i++) {
-			fragment.appendChild(childNodes[i]);
-		}
+        const fragment = new ProxyViewContainer();
+        const view = Builder.parse(xml);
+        fragment.addChild(view);
 
 		return fragment;
 	}
@@ -347,14 +375,13 @@ export const env: Environment<Instance> = {
             const node = new StackLayout();
 			let props: Props = {};
 			let nextProps: Props;
-			let children: Array<Element | string> = [];
-			let nextChildren: Array<Element | string>;
+			let children: Array<View | string> = [];
+			let nextChildren: Array<View | string>;
 			for ({children: nextChildren, ...nextProps} of this) {
 				updateProps(node, props, nextProps);
                 props = nextProps;
 				if (children.length > 0 || nextChildren.length > 0) {
-                    // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
-					// updateChildren(node, nextChildren);
+					updateChildren(node, nextChildren);
 					children = nextChildren;
 				}
 
@@ -364,9 +391,8 @@ export const env: Environment<Instance> = {
 	},
 	[Raw]({value}): Instance {
 		if (typeof value === "string") {
-            // TODO @shirakaba: determine what should be implemented, analogous to a document fragment.
-			// TODO: figure out what the type of element should actually be
-			return (createDocumentFragmentFromHTML(value) as unknown) as Instance;
+			// TODO @bikeshaving: figure out what the type of element should actually be
+			return (createDocumentFragmentFromXML(value) as unknown) as Instance;
 		} else {
 			return value;
 		}
@@ -383,17 +409,14 @@ export const env: Environment<Instance> = {
 				}
 
 				if (root !== newRoot) {
-                    // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
 					updateChildren(root, []);
 					root = newRoot;
-				}
-
-                // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
+                }
+                
 				updateChildren(root, children);
 				yield root;
 			}
 		} finally {
-            // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
 			updateChildren(root, []);
 		}
 	},
