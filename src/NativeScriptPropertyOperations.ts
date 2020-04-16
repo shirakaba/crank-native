@@ -1,9 +1,7 @@
-import { Instance, HostContext } from "../shared/HostConfigTypes";
 import { TextBase } from "tns-core-modules/ui/text-base/text-base";
-import { setValueForStyles } from "../shared/CSSPropertyOperations";
+import { setValueForStyles } from "./CSSPropertyOperations";
 import { DockLayout, dockProperty } from "tns-core-modules/ui/layouts/dock-layout/dock-layout";
 import { View, classNameProperty } from "tns-core-modules/ui/core/view/view";
-import { ViewBase } from "tns-core-modules/ui/core/view-base/view-base";
 import {
     GridLayout,
     ItemSpec,
@@ -23,9 +21,9 @@ import {
     orderProperty,
 } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import { isIOS, isAndroid } from "tns-core-modules/platform/platform";
-import { ActionBar, TabViewItem } from "./ElementRegistry";
-import * as console from "../shared/Logger";
+import * as console from "./Logger";
 import { rnsDeletedPropValue } from "./magicValues";
+import { Instance, HostContext } from "./HostConfigTypes";
 
 /**
  * Code in here referenced from: https://github.com/facebook/react/blob/master/packages/react-dom/src/client/DOMPropertyOperations.js which carries the following copyright:
