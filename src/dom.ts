@@ -357,7 +357,7 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
 
 function createDocumentFragmentFromXML(xml: string): ProxyViewContainer {
 	if (document && typeof document.createRange === "function") {
-        // @shirakaba: I have no idea what document.createRange, so no idea how to translate to NativeScript, sadly!
+        // @shirakaba: I have no idea what document.createRange() is, so no idea how to translate to NativeScript, sadly!
         return new ProxyViewContainer();
 	} else {
         const fragment = new ProxyViewContainer();
