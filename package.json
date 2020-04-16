@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@bikeshaving/crank": "^0.1.0",
-    "tns-core-modules": "^6.5.1"
+    "tns-core-modules": "^6.5.1",
+    "typescript": "^3.8.3"
   }
 }
