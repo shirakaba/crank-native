@@ -47,7 +47,6 @@ function printAttrs(props: IntrinsicProps<string>): string {
 	for (const [name, value] of Object.entries(props)) {
 		switch (true) {
 			case name === "children":
-			case name === "innerHTML":
 				break;
 			case name === "style":
 				attrs.push(`style="${printStyle(value)}"`);
@@ -67,23 +66,26 @@ function printAttrs(props: IntrinsicProps<string>): string {
 	return attrs.join(" ");
 }
 
+/**
+ * I'm not sure whether NativeScript has any void tags at all.
+ */
 const voidTags = new Set([
-	"area",
-	"base",
-	"br",
-	"col",
-	"command",
-	"embed",
-	"hr",
-	"img",
-	"input",
-	"keygen",
-	"link",
-	"meta",
-	"param",
-	"source",
-	"track",
-	"wbr",
+	// "area",
+	// "base",
+	// "br",
+	// "col",
+	// "command",
+	// "embed",
+	// "hr",
+	// "img",
+	// "input",
+	// "keygen",
+	// "link",
+	// "meta",
+	// "param",
+	// "source",
+	// "track",
+	// "wbr",
 ]);
 
 export const env: Environment<string> = {
@@ -96,9 +98,6 @@ export const env: Environment<string> = {
 			}
 
 			const close = `</${tag}>`;
-			if ("innerHTML" in props) {
-				return `${open}${props["innerHTML"]}${close}`;
-			}
 
 			return `${open}${props.children.join("")}${close}`;
 		};
