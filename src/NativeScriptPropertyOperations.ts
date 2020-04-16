@@ -23,7 +23,7 @@ import {
 import { isIOS, isAndroid } from "tns-core-modules/platform/platform";
 import * as console from "./Logger";
 import { rnsDeletedPropValue } from "./magicValues";
-import { Instance, HostContext } from "./HostConfigTypes";
+import { Instance, HostContext } from "./nativescriptDomInterface/HostConfigTypes";
 
 /**
  * Code in here referenced from: https://github.com/facebook/react/blob/master/packages/react-dom/src/client/DOMPropertyOperations.js which carries the following copyright:
