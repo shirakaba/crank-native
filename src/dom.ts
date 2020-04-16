@@ -10,6 +10,7 @@ import {
 } from "@bikeshaving/crank/cjs/index";
 import { setValueForProperty } from "./NativeScriptPropertyOperations";
 import { Instance, HostContext as RNSHostContext } from "./HostConfigTypes";
+import { StackLayout } from "@nativescript/core";
 
 const rootHostContext: RNSHostContext = {
     isInAParentText: false,
@@ -35,7 +36,7 @@ function updateProps(el: Instance, props: Props, newProps: Props): void {
             name,
             newValue,
             false,
-            rootHostContext, // TODO: implement correct RNS Host Context rather than default one.
+            rootHostContext, // TODO @shirakaba: implement correct RNS Host Context rather than default one.
         );
     }
 }
@@ -43,6 +44,8 @@ function updateProps(el: Instance, props: Props, newProps: Props): void {
 // TODO: improve this algorithm
 // https://stackoverflow.com/questions/59418120/what-is-the-most-efficient-way-to-update-the-childnodes-of-a-dom-node-with-an-ar
 function updateChildren(el: Element, children: Array<Node | string>): void {
+    // TODO @shirakaba: re-implement for NativeScript!
+
 	if (el.childNodes.length === 0) {
 		const fragment = document.createDocumentFragment();
 		for (let child of children) {
@@ -90,6 +93,7 @@ function updateChildren(el: Element, children: Array<Node | string>): void {
 }
 
 function createDocumentFragmentFromHTML(html: string): DocumentFragment {
+    // TODO @shirakaba: determine what should be implemented, analogous to a document fragment.
 	if (typeof document.createRange === "function") {
 		return document.createRange().createContextualFragment(html);
 	} else {
@@ -105,22 +109,20 @@ function createDocumentFragmentFromHTML(html: string): DocumentFragment {
 }
 
 // TODO: Element should be ParentNode maybe?
-export const env: Environment<Element> = {
-	[Default](tag: string): Intrinsic<Element> {
-		return function* defaultDOM(this: HostContext): Generator<Element> {
-			const node = document.createElement(tag);
+export const env: Environment<Instance> = {
+	[Default](tag: string): Intrinsic<Instance> {
+		return function* defaultDOM(this: HostContext): Generator<Instance> {
+            const node = new StackLayout();
 			let props: Props = {};
 			let nextProps: Props;
 			let children: Array<Element | string> = [];
 			let nextChildren: Array<Element | string>;
 			for ({children: nextChildren, ...nextProps} of this) {
 				updateProps(node, props, nextProps);
-				props = nextProps;
-				if (
-					!("innerHTML" in nextProps) &&
-					(children.length > 0 || nextChildren.length > 0)
-				) {
-					updateChildren(node, nextChildren);
+                props = nextProps;
+				if (children.length > 0 || nextChildren.length > 0) {
+                    // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
+					// updateChildren(node, nextChildren);
 					children = nextChildren;
 				}
 
@@ -128,15 +130,16 @@ export const env: Environment<Element> = {
 			}
 		};
 	},
-	[Raw]({value}): Element {
+	[Raw]({value}): Instance {
 		if (typeof value === "string") {
+            // TODO @shirakaba: determine what should be implemented, analogous to a document fragment.
 			// TODO: figure out what the type of element should actually be
-			return (createDocumentFragmentFromHTML(value) as unknown) as Element;
+			return (createDocumentFragmentFromHTML(value) as unknown) as Instance;
 		} else {
 			return value;
 		}
 	},
-	*[Portal](this: HostContext, {root}): Generator<Element> {
+	*[Portal](this: HostContext, {root}): Generator<Instance> {
 		if (root == null) {
 			throw new TypeError("Portal element is missing root node");
 		}
@@ -148,23 +151,26 @@ export const env: Environment<Element> = {
 				}
 
 				if (root !== newRoot) {
+                    // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
 					updateChildren(root, []);
 					root = newRoot;
 				}
 
+                // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
 				updateChildren(root, children);
 				yield root;
 			}
 		} finally {
+            // TODO @shirakaba: somehow map updateChildren to appendChild() (etc.) calls...
 			updateChildren(root, []);
 		}
 	},
 };
 
-export class DOMRenderer extends Renderer<Element> {
+export class NativeScriptRenderer extends Renderer<Instance> {
 	constructor() {
 		super(env);
 	}
 }
 
-export const renderer = new DOMRenderer();
+export const renderer = new NativeScriptRenderer();
