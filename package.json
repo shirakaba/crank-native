@@ -4,7 +4,9 @@
   "description": "A Crank renderer for iOS and Android apps, based on NativeScript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/shirakaba/crank-native/issues"
   },
-  "homepage": "https://github.com/shirakaba/crank-native#readme"
+  "homepage": "https://github.com/shirakaba/crank-native#readme",
+  "peerDependencies": {
+    "@bikeshaving/crank": "^0.1.0"
+  },
+  "devDependencies": {
+    "@bikeshaving/crank": "^0.1.0"
+  }
 }
