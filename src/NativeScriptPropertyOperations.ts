@@ -31,7 +31,7 @@ import { rnsDeletedPropValue } from "./magicValues";
  * Code in here referenced from: https://github.com/facebook/react/blob/master/packages/react-dom/src/client/DOMPropertyOperations.js which carries the following copyright:
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the MIT license found in React-LICENSE.txt.
+ * This source code is licensed under the MIT license found in LICENSE.
  */
 
 /**
