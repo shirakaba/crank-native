@@ -1,0 +1,21 @@
+{
+  "name": "crank-native",
+  "version": "0.1.0",
+  "description": "A Crank renderer for iOS and Android apps, based on NativeScript.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shirakaba/crank-native.git"
+  },
+  "author": "Jamie Birch <14055146+shirakaba@users.noreply.github.com> (https://github.com/shirakaba)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shirakaba/crank-native/issues"
+  },
+  "homepage": "https://github.com/shirakaba/crank-native#readme"
+}
