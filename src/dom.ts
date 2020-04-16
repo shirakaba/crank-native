@@ -8,60 +8,36 @@ import {
 	Renderer,
 	Portal,
 } from "@bikeshaving/crank/cjs/index";
+import { setValueForProperty } from "./NativeScriptPropertyOperations";
+import { Instance, HostContext as RNSHostContext } from "./HostConfigTypes";
+
+const rootHostContext: RNSHostContext = {
+    isInAParentText: false,
+    isInAParentSpan: false,
+    isInAParentFormattedString: false,
+    isInADockLayout: false,
+    isInAGridLayout: false,
+    isInAnAbsoluteLayout: false,
+    isInAFlexboxLayout: false,
+};
 
 // declare module "./index" {
 // 	interface EventMap extends GlobalEventHandlersEventMap {}
 // }
 
 // TODO: create an allowlist/blocklist of props
-function updateProps(el: Element, props: Props, newProps: Props): void {
-	for (const name in {...props, ...newProps}) {
-		const value = props[name];
+function updateProps(el: Instance, props: Props, newProps: Props): void {
+    for (const name in {...props, ...newProps}) {
+        const value = props[name];
 		const newValue = newProps[name];
-		switch (true) {
-			case name === "children":
-				break;
-			case name === "class":
-			case name === "className": {
-				(el as any)["className"] = newValue;
-				break;
-			}
-			case name === "style" && "style" in el: {
-				const style: CSSStyleDeclaration = (el as any).style;
-				if (newValue == null) {
-					el.removeAttribute("style");
-				} else if (typeof newValue === "string") {
-					style.cssText = newValue;
-				} else {
-					for (const styleName in Object.assign({}, value, newValue)) {
-						const styleValue = value && value[styleName];
-						const newStyleValue = newValue && newValue[styleName];
-						if (newStyleValue == null) {
-							style.removeProperty(styleName);
-						} else if (styleValue !== newStyleValue) {
-							style.setProperty(styleName, newStyleValue);
-						}
-					}
-				}
-
-				break;
-			}
-			default: {
-				if (name in el) {
-					(el as any)[name] = newValue;
-					break;
-				} else if (newValue === true) {
-					el.setAttribute(name, "");
-				} else if (newValue === false || newValue == null) {
-					el.removeAttribute(name);
-				} else {
-					el.setAttribute(name, newValue);
-				}
-
-				break;
-			}
-		}
-	}
+        setValueForProperty(
+            el,
+            name,
+            newValue,
+            false,
+            rootHostContext, // TODO: implement correct RNS Host Context rather than default one.
+        );
+    }
 }
 
 // TODO: improve this algorithm
