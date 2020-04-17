@@ -10,7 +10,7 @@
     </a>
 </p>
 
-A [`crank.js`](https://github.com/bikeshaving/crank) custom renderer for iOS and Android apps, based on NativeScript. Allows you to write native apps using Crank.
+Crank Native is a [`crank.js`](https://github.com/bikeshaving/crank) custom renderer for apps hosted on iOS and Android, based on NativeScript. In other words, it's a library that allows you to write native mobile apps using Crank.
 
 This renderer is under construction, and not ready for use yet! Find out more by contacting [@LinguaBrowse](https://twitter.com/LinguaBrowse) on Twitter.
 
