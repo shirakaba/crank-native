@@ -1,6 +1,11 @@
 # Crank Native
 
 <p align="center">
+    <p style="font-size: 96px;">🔧</p>
+    <p><em>There is no logo yet</em></p>
+</p>
+
+<p align="center">
     <a href="https://badge.fury.io/js/crank-native"><img src="https://badge.fury.io/js/crank-native.svg" alt="npm version" height="18"></a>
     <a href="https://opensource.org/licenses/mit-license.php">
         <img src="https://badges.frapsoft.com/os/mit/mit.png?v=103"/>
