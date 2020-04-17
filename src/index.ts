@@ -1,15 +1,17 @@
 import { renderer } from "./ns";
 import * as console from "./Logger";
-import { Application, View, StackLayout } from "@nativescript/core";
-import { Child } from "@bikeshaving/crank/cjs";
+import { Application, View } from "@nativescript/core";
+import { Element } from "@bikeshaving/crank/cjs";
 
 /**
- * FIXME @shirakaba: Crank is coupled to the concept that the Child is an Element,
- * and doesn't use the renderer DOM APIs.
- *
- * @param App The container component for your app.
+ * Start up your Crank Native app, rendering a Crank component tree into a NativeScript host element.
+ * 
+ * Calls NativeScript Core's Application.run() API under the hood.
+ * 
+ * @param App The root Crank component for your app.
+ * @param rootView The host root view for your Crank component tree.
  */
-export function start(App: Child): void {
+export function start(App: Element, rootView: View): void {
     const existingRootView: View | undefined = Application.getRootView();
     const _hasLaunched: boolean = Application.hasLaunched();
     console.log(
@@ -22,10 +24,6 @@ export function start(App: Child): void {
 
     Application.run({
         create: () => {
-            const rootView = new StackLayout();
-            rootView.width = { value: 100, unit: "%" };
-            rootView.height = { value: 100, unit: "%" };
-
             renderer.render(App, rootView);
 
             return rootView;
