@@ -10,7 +10,7 @@
     "README.md"
   ],
   "scripts": {
-    "prettier": "prettier --print-width 120 --tab-width 4 --trailing-comma es5 --end-of-line lf --write \"src/**/*.ts\"",
+    "prettier": "prettier --print-width 120 --tab-width 4 --trailing-comma es5 --end-of-line lf --arrow-parens always --write \"src/**/*.ts\"",
     "build": "tsc --project ./tsconfig.json",
     "dev": "tsc --watch --project ./tsconfig.json",
     "prepare": "npm run build",
@@ -26,12 +26,19 @@
     "url": "https://github.com/shirakaba/crank-native/issues"
   },
   "homepage": "https://github.com/shirakaba/crank-native#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "git-format-staged -f 'prettier --print-width 120 --tab-width 4 --trailing-comma es5 --end-of-line lf --arrow-parens always --stdin --stdin-filepath \"{}\"' '*.js' '*.jsx' '*.ts' '*.tsx' '*.css' '*.json' '*.gql'"
+    }
+  },
   "peerDependencies": {
     "@bikeshaving/crank": "^0.1.0",
     "tns-core-modules": "^6.5.1"
   },
   "devDependencies": {
     "@bikeshaving/crank": "^0.1.0",
+    "git-format-staged": "^2.1.0",
+    "husky": "^4.2.5",
     "prettier": "^2.0.4",
     "tns-core-modules": "^6.5.1",
     "typescript": "^3.8.3"
