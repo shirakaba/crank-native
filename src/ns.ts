@@ -1,16 +1,34 @@
 import {
-	HostContext,
-	Default,
-	Environment,
-	Intrinsic,
-	Props,
-	Raw,
-	Renderer,
-	Portal,
+    HostContext,
+    Default,
+    Environment,
+    Intrinsic,
+    Props,
+    Raw,
+    Renderer,
+    Portal,
 } from "@bikeshaving/crank/cjs/index";
 import { setValueForProperty } from "./nativescriptInterface/NativeScriptPropertyOperations";
 import { Instance, HostContext as RNSHostContext, TextInstance } from "./nativescriptInterface/HostConfigTypes";
-import { StackLayout, LayoutBase, GridLayout, View, ViewBase, Page, ActionBar, ActionItem, NavigationButton, TabView, TabViewItem, ContentView, ScrollView, ProxyViewContainer, Builder, TextBase, Span } from "@nativescript/core";
+import {
+    StackLayout,
+    LayoutBase,
+    GridLayout,
+    View,
+    ViewBase,
+    Page,
+    ActionBar,
+    ActionItem,
+    NavigationButton,
+    TabView,
+    TabViewItem,
+    ContentView,
+    ScrollView,
+    ProxyViewContainer,
+    Builder,
+    TextBase,
+    Span,
+} from "@nativescript/core";
 
 const rootHostContext: RNSHostContext = {
     isInAParentText: false,
@@ -28,15 +46,15 @@ const rootHostContext: RNSHostContext = {
 
 // TODO @bikeshaving: create an allowlist/blocklist of props
 function updateProps(el: Instance, props: Props, newProps: Props): void {
-    for (const name in {...props, ...newProps}) {
+    for (const name in { ...props, ...newProps }) {
         const value = props[name];
-		const newValue = newProps[name];
+        const newValue = newProps[name];
         setValueForProperty(
             el,
             name,
             newValue,
             false,
-            rootHostContext, // TODO @shirakaba: implement correct RNS Host Context rather than default one.
+            rootHostContext // TODO @shirakaba: implement correct RNS Host Context rather than default one.
         );
     }
 }
@@ -118,7 +136,11 @@ function appendChild(parentInstance: Instance, child: Instance | TextInstance): 
     // TODO: check whether a property/event change should be fired.
 }
 
-function insertBefore(parentInstance: Instance, child: Instance | TextInstance, beforeChild: Instance | TextInstance): void {
+function insertBefore(
+    parentInstance: Instance,
+    child: Instance | TextInstance,
+    beforeChild: Instance | TextInstance
+): void {
     console.log(`[HostConfig.insertBefore] ${parentInstance} > ${child} beforeChild ${beforeChild}`);
 
     // if (implementsCustomNodeHierarchyManager(parentInstance) && parentInstance.__customHostConfigInsertBefore) {
@@ -150,9 +172,7 @@ function insertBefore(parentInstance: Instance, child: Instance | TextInstance, 
         if (child.parent === parentInstance) {
             const index: number = parentInstance.getChildIndex(child as View);
             if (index !== -1) {
-                console.log(
-                    `[HostConfig.insertBefore] Provisionally calling ${parentInstance}.removeChild(${child}).`
-                );
+                console.log(`[HostConfig.insertBefore] Provisionally calling ${parentInstance}.removeChild(${child}).`);
                 parentInstance.removeChild(child as View);
             }
         }
@@ -254,7 +274,7 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
         if (!parent.items) {
             parent.items = [];
         }
-        parent.items = parent.items.filter(i => i !== child);
+        parent.items = parent.items.filter((i) => i !== child);
     } else if (parent instanceof TabViewItem) {
         console.log(
             `[removeChild()] Detaching view from TabViewItem not supported in NativeScript Core, so no-op: ${parent} x ${child}`
@@ -285,21 +305,23 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
         return true;
     });
 
-	if (oldChildren.length === 0) {
+    if (oldChildren.length === 0) {
         // const fragment = new ProxyViewContainer();
         const childrenToAdd = [];
         for (let child of children) {
-			if (typeof child === "string" || typeof child === "number") {
-                if(el instanceof TextBase || el instanceof Span){
+            if (typeof child === "string" || typeof child === "number") {
+                if (el instanceof TextBase || el instanceof Span) {
                     el.text = child.toString();
                 } else {
-                    throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+                    throw new Error(
+                        `Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`
+                    );
                 }
-			} else {
+            } else {
                 // fragment.addChild(child);
             }
         }
-        
+
         /* Very low likelihood of ProxyViewContainer working for all cases of JSX.
          * I'll use my custom appendChild() implementation instead. */
         // appendChild(el, fragment);
@@ -308,23 +330,25 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
             appendChild(el, child);
         });
 
-		return;
+        return;
     }
 
     let i: number = 0;
-    let oldChild: Instance|null = oldChildren[i] || null;
-	for (const newChild of children) {
-		if (oldChild === null) {
-            if(typeof newChild === "string" || typeof newChild === "number"){
-                if(el instanceof TextBase || el instanceof Span){
+    let oldChild: Instance | null = oldChildren[i] || null;
+    for (const newChild of children) {
+        if (oldChild === null) {
+            if (typeof newChild === "string" || typeof newChild === "number") {
+                if (el instanceof TextBase || el instanceof Span) {
                     el.text = newChild.toString();
                 } else {
-                    throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+                    throw new Error(
+                        `Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`
+                    );
                 }
             } else {
                 appendChild(el, newChild);
             }
-		} else if (typeof newChild === "string" || typeof newChild === "number") {
+        } else if (typeof newChild === "string" || typeof newChild === "number") {
             /**
              * NativeScript simply doesn't support text nodes to the level that DOM does.
              * i.e. you can't have ViewBases as siblings to text nodes; it's one or the other.
@@ -332,100 +356,102 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
              * Essentially, mapping this aspect 1:1 with the DOM renderer is not possible here.
              */
 
-            if(el instanceof TextBase || el instanceof Span){
+            if (el instanceof TextBase || el instanceof Span) {
                 el.text = newChild.toString();
             } else {
-                throw new Error(`Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`);
+                throw new Error(
+                    `Crank Native's Host Config only supports rendering text nodes as direct children of one of the primitives ["label", "textView", "textField", "button", "span"]. Please use the 'text' property for setting text on this element instead.`
+                );
             }
-		} else if (oldChild !== newChild) {
+        } else if (oldChild !== newChild) {
             insertBefore(el, newChild, oldChild);
-		} else {
+        } else {
             i++;
-			oldChild = oldChildren[i] || null;
-		}
-	}
+            oldChild = oldChildren[i] || null;
+        }
+    }
 
-	while (oldChild !== null) {
+    while (oldChild !== null) {
         i++;
         const nextSibling = oldChildren[i] || null;
-        if(oldChild !== null){
+        if (oldChild !== null) {
             removeChild(el, oldChild);
         }
-		oldChild = nextSibling;
-	}
+        oldChild = nextSibling;
+    }
 }
 
 function createDocumentFragmentFromXML(xml: string): ProxyViewContainer {
-	if (document && typeof document.createRange === "function") {
+    if (document && typeof document.createRange === "function") {
         // @shirakaba: I have no idea what document.createRange() is, so no idea how to translate to NativeScript, sadly!
         return new ProxyViewContainer();
-	} else {
+    } else {
         const fragment = new ProxyViewContainer();
         const view = Builder.parse(xml);
         fragment.addChild(view);
 
-		return fragment;
-	}
+        return fragment;
+    }
 }
 
 // TODO: Element should be ParentNode maybe?
 export const env: Environment<Instance> = {
-	[Default](tag: string): Intrinsic<Instance> {
-		return function* defaultDOM(this: HostContext): Generator<Instance> {
+    [Default](tag: string): Intrinsic<Instance> {
+        return function* defaultDOM(this: HostContext): Generator<Instance> {
             const node = new StackLayout();
-			let props: Props = {};
-			let nextProps: Props;
-			let children: Array<View | string> = [];
-			let nextChildren: Array<View | string>;
-			for ({children: nextChildren, ...nextProps} of this) {
-				updateProps(node, props, nextProps);
+            let props: Props = {};
+            let nextProps: Props;
+            let children: Array<View | string> = [];
+            let nextChildren: Array<View | string>;
+            for ({ children: nextChildren, ...nextProps } of this) {
+                updateProps(node, props, nextProps);
                 props = nextProps;
-				if (children.length > 0 || nextChildren.length > 0) {
-					updateChildren(node, nextChildren);
-					children = nextChildren;
-				}
-
-				yield node;
-			}
-		};
-	},
-	[Raw]({value}): Instance {
-		if (typeof value === "string") {
-			// TODO @bikeshaving: figure out what the type of element should actually be
-			return (createDocumentFragmentFromXML(value) as unknown) as Instance;
-		} else {
-			return value;
-		}
-	},
-	*[Portal](this: HostContext, {root}): Generator<Instance> {
-		if (root == null) {
-			throw new TypeError("Portal element is missing root node");
-		}
-
-		try {
-			for (const {root: newRoot, children} of this) {
-				if (newRoot == null) {
-					throw new TypeError("Portal element is missing root node");
-				}
-
-				if (root !== newRoot) {
-					updateChildren(root, []);
-					root = newRoot;
+                if (children.length > 0 || nextChildren.length > 0) {
+                    updateChildren(node, nextChildren);
+                    children = nextChildren;
                 }
-                
-				updateChildren(root, children);
-				yield root;
-			}
-		} finally {
-			updateChildren(root, []);
-		}
-	},
+
+                yield node;
+            }
+        };
+    },
+    [Raw]({ value }): Instance {
+        if (typeof value === "string") {
+            // TODO @bikeshaving: figure out what the type of element should actually be
+            return (createDocumentFragmentFromXML(value) as unknown) as Instance;
+        } else {
+            return value;
+        }
+    },
+    *[Portal](this: HostContext, { root }): Generator<Instance> {
+        if (root == null) {
+            throw new TypeError("Portal element is missing root node");
+        }
+
+        try {
+            for (const { root: newRoot, children } of this) {
+                if (newRoot == null) {
+                    throw new TypeError("Portal element is missing root node");
+                }
+
+                if (root !== newRoot) {
+                    updateChildren(root, []);
+                    root = newRoot;
+                }
+
+                updateChildren(root, children);
+                yield root;
+            }
+        } finally {
+            updateChildren(root, []);
+        }
+    },
 };
 
 export class NativeScriptRenderer extends Renderer<Instance> {
-	constructor() {
-		super(env);
-	}
+    constructor() {
+        super(env);
+    }
 }
 
 export const renderer = new NativeScriptRenderer();

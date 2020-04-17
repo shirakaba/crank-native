@@ -6,7 +6,7 @@ import { Child } from "@bikeshaving/crank/cjs";
 /**
  * FIXME @shirakaba: Crank is coupled to the concept that the Child is an Element,
  * and doesn't use the renderer DOM APIs.
- * 
+ *
  * @param App The container component for your app.
  */
 export function start(App: Child): void {
