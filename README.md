@@ -70,7 +70,7 @@ The code for that is:
 import { createElement } from "@bikeshaving/crank/cjs/index";
 import { Color } from "@nativescript/core";
 
-export default function Greeting({ name= "World" }) {
+export default function Greeting({ name = "World" }) {
     return (
         <contentView
             backgroundColor={new Color("yellow")}
