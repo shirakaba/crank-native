@@ -29,6 +29,7 @@ import {
     TextBase,
     Span,
 } from "@nativescript/core";
+import { elementMap } from "./nativescriptInterface/elementRegistry";
 
 const rootHostContext: RNSHostContext = {
     isInAParentText: false,
@@ -399,7 +400,12 @@ function createDocumentFragmentFromXML(xml: string): ProxyViewContainer {
 export const env: Environment<Instance> = {
     [Default](tag: string): Intrinsic<Instance> {
         return function* defaultDOM(this: HostContext): Generator<Instance> {
-            const node = new StackLayout();
+            const instanceCreator = elementMap[tag];
+            if(typeof instanceCreator === "undefined"){
+                throw new Error(`Tag <${tag}> is not a registered JSX primitive element.`);
+            }
+
+            const node = instanceCreator();
             let props: Props = {};
             let nextProps: Props;
             let children: Array<View | string> = [];

@@ -18,7 +18,7 @@ export type HostContext = {
     isInAFlexboxLayout: boolean;
 };
 export type InstanceCreator<T extends Instance = Instance> = (
-    props: Props,
-    rootContainerInstance: Container,
-    hostContext: HostContext
+    props?: Props,
+    rootContainerInstance?: Container,
+    hostContext?: HostContext
 ) => T;
