@@ -2,7 +2,7 @@
 
 <div align="center">
     <h1>🔧</h1>
-    <h2><em>There is no logo yet</em></h2>
+    <p><em>There is no logo yet</em></p>
 </div>
 
 <p align="center">
