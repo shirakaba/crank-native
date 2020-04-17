@@ -319,6 +319,7 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
                 }
             } else {
                 // fragment.addChild(child);
+                childrenToAdd.push(child);
             }
         }
 
