@@ -1,9 +1,9 @@
 # Crank Native
 
-<p align="center">
-    <p style="font-size: 96px;">🔧</p>
-    <p><em>There is no logo yet</em></p>
-</p>
+<div align="center">
+    <h1>🔧</h1>
+    <h2><em>There is no logo yet</em></h2>
+</div>
 
 <p align="center">
     <a href="https://badge.fury.io/js/crank-native"><img src="https://badge.fury.io/js/crank-native.svg" alt="npm version" height="18"></a>
