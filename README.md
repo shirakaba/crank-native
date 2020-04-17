@@ -1,7 +1,7 @@
 # Crank Native
 
 <div align="center">
-    <h1>🔧</h1>
+    <h1>🔧🤖</h1>
     <p><em>There is no logo yet</em></p>
 </div>
 
@@ -16,8 +16,6 @@
 </p>
 
 Crank Native is a [`crank.js`](https://github.com/bikeshaving/crank) custom renderer for apps hosted on iOS and Android, based on NativeScript. In other words, it's a library that allows you to write native mobile apps using Crank.
-
-This renderer is under construction, and not ready for serious use yet! Find out more by contacting [@LinguaBrowse](https://twitter.com/LinguaBrowse) on Twitter.
 
 ## Setup
 
