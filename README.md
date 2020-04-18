@@ -45,9 +45,8 @@ Nothing yet. It's based on React NativeScript, so you can read the [React Native
 The main differences from React NativeScript are:
 
 1. While RNS component names have the format `<$ContentView>` (they are class components), Crank Native elements have the format `<contentView>` (they are JSX intrinsic elements);
-2. I haven't produced typings yet (so there is no Intellisense yet);
-3. I haven't implemented ancestor context yet (so LayoutBase elements won't work yet);
-4. I haven't implemented event handlers yet.
+2. I haven't implemented ancestor context yet (so LayoutBase elements won't work yet);
+3. I haven't implemented event handlers yet.
 
 These improvements will come shortly! I'm just making sure to share things as soon as possible.
 
@@ -99,11 +98,11 @@ It's rather verbose at present, but I'll be improving these things in time.
 - [x] Filled in all the renderer APIs (AKA DOM interface) using React NativeScript's Host Config;
 - [x] Have completed a NativeScript CLI template, [`tns-template-blank-crank`](https://github.com/shirakaba/tns-template-blank-crank), so that users can initialise apps via NativeScript CLI;
 - [x] Make a sample app;
+- [x] Provide typings for intrinsic elements;
 
 ## Roadmap 🛣
 
 * Implement ancestor context to support LayoutBase;
-* Provide typings for intrinsic elements;
 * Implement event handling;
 * Create a NativeScript Playground template;
 * Write docs;
