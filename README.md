@@ -42,13 +42,7 @@ tns debug ios --no-hmr --debug-brk
 
 Nothing yet. It's based on React NativeScript, so you can read the [React NativeScript docs](https://react-nativescript.netlify.com/) for now. You can also read the [NativeScript Core](https://docs.nativescript.org/start/introduction) docs, which are equally applicable.
 
-The main differences from React NativeScript are:
-
-1. While RNS component names have the format `<$ContentView>` (they are class components), Crank Native elements have the format `<contentView>` (they are JSX intrinsic elements);
-2. I haven't implemented ancestor context yet (so LayoutBase elements won't work yet);
-3. I haven't implemented event handlers yet.
-
-These improvements will come shortly! I'm just making sure to share things as soon as possible.
+The main difference from React NativeScript is that, while RNS component names have the format `<$ContentView>` (they are class components), Crank Native elements have the format `<contentView>` (they are JSX intrinsic elements).
 
 
 ## Sample code
