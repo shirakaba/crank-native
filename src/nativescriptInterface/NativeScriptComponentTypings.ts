@@ -1,6 +1,8 @@
 import type { AbsoluteLayout, ActionBar, ActionItem, NavigationButton, ActivityIndicator, Button, Color, ContentView, DatePicker, DockLayout, EditableTextBase, FlexboxLayout, Frame, GridLayout, HtmlView, Image, Label, LayoutBase, ListPicker, ListView, Observable, Page, Placeholder, Progress, ProxyViewContainer, Repeater, ScrollView, SearchBar, SegmentedBar, SegmentedBarItem, Slider, StackLayout, Style, Switch, TabView, TabViewItem, TextBase, TextField, TextView, TimePicker, View, ViewBase, WebView, WrapLayout, Span, FormattedString, EventData } from "@nativescript/core";
 import type { ContainerView } from "tns-core-modules/ui/core/view/view";
 import * as console from "../Logger";
+import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
+import { ItemsSource } from "tns-core-modules/ui/list-picker/list-picker";
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type StylePropContents = Omit<Style, "PropertyBag" | keyof Observable>;
@@ -262,7 +264,7 @@ export type FlexboxLayoutProps = LayoutBaseProps &
 export type DockLayoutProps = LayoutBaseProps & Pick<DockLayout, "stretchLastChild">;
 
 /* No props on GridLayout; just getters and setters. */
-export type GridLayoutProps = LayoutBaseProps;
+export type GridLayoutProps = LayoutBaseProps & { rows?: ItemSpec[], columns?: ItemSpec[]; };
 // & Pick<
 //     GridLayout,
 // >;
@@ -323,8 +325,8 @@ export type ListPickerProps = ViewProps &
     Pick<
         ListPicker,
         "selectedIndex"
-        // "items" /* We redefine this as (any[] | ItemsSource) and non-optional in the $ListPicker class component */
-    >;
+        // "items" /* We redefine this as (any[] | ItemsSource) */
+    > & { items: any[] | ItemsSource };
 
 export type SwitchProps = ViewProps & Pick<Switch, "checked">;
 
