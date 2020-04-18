@@ -45,7 +45,7 @@ export function setValueForProperty(
     name: string,
     value: any,
     isCustomComponentTag: boolean,
-    hostContext: HostContext
+    // hostContext: HostContext
 ) {
     // const propertyInfo = getPropertyInfo(name);
     // if (shouldIgnoreAttribute(name, propertyInfo, isCustomComponentTag)) {
@@ -131,12 +131,11 @@ export function setValueForProperty(
             }
         }
     } else if (
-        (name === "alignSelf" ||
-            name === "flexGrow" ||
-            name === "flexShrink" ||
-            name === "flexWrapBefore" ||
-            name === "order") &&
-        hostContext.isInAFlexboxLayout
+        name === "alignSelf" ||
+        name === "flexGrow" ||
+        name === "flexShrink" ||
+        name === "flexWrapBefore" ||
+        name === "order"
     ) {
         if (name === "alignSelf") {
             FlexboxLayout.setAlignSelf(
@@ -164,21 +163,21 @@ export function setValueForProperty(
                 value === rnsDeletedPropValue ? orderProperty.defaultValue : value
             );
         }
-    } else if ((name === "top" || name === "left") && hostContext.isInAnAbsoluteLayout) {
-        /* FIXME: Determine whether it makes sense for top/left to be applied upon the instance    * itself if component is ever removed from its AbsoluteLayout parent (and how to do so). */
+    } else if (name === "top" || name === "left") {
+        /* FIXME: Determine whether it makes sense for top/left to be applied upon the instance
+         * itself if component is ever removed from its AbsoluteLayout parent (and how to do so). */
         if (name === "top") {
             AbsoluteLayout.setTop(instance as View, value === rnsDeletedPropValue ? topProperty.defaultValue : value);
         } else if (name === "left") {
             AbsoluteLayout.setLeft(instance as View, value === rnsDeletedPropValue ? leftProperty.defaultValue : value);
         }
-    } else if (name === "dock" && hostContext.isInADockLayout) {
+    } else if (name === "dock") {
         // https://github.com/NativeScript/NativeScript/blob/05c2460fc4989dae4d7fa1ee52f6d54e0c3113f5/tns-core-modules/ui/layouts/dock-layout/dock-layout-common.ts
         /* If the component is subsequently removed from its Dock parent, I'm guessing that
          * this property probably has no effect, so no need to figure out how to unset it. */
         DockLayout.setDock(instance as View, value === rnsDeletedPropValue ? dockProperty.defaultValue : value);
     } else if (
-        (name === "row" || name === "column" || name === "rowSpan" || name === "columnSpan") &&
-        hostContext.isInAGridLayout
+        name === "row" || name === "column" || name === "rowSpan" || name === "columnSpan"
     ) {
         // https://github.com/NativeScript/nativescript-sdk-examples-js/blob/master/app/ns-ui-widgets-category/layouts/grid-layout/grid-layout-ts-page.ts
         /* If the component is subsequently removed from its Grid parent, I'm guessing that

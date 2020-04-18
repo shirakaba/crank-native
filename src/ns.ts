@@ -34,86 +34,69 @@ import {
     FlexboxLayout,
 } from "@nativescript/core";
 import { elementMap } from "./nativescriptInterface/elementRegistry";
+import * as console from "./Logger";
 
-const rootHostContext: RNSHostContext = {
-    isInAParentText: false,
-    isInAParentSpan: false,
-    isInAParentFormattedString: false,
-    isInADockLayout: false,
-    isInAGridLayout: false,
-    isInAnAbsoluteLayout: false,
-    isInAFlexboxLayout: false,
-};
+// const rootHostContext: RNSHostContext = {
+//     isInAParentText: false,
+//     isInAParentSpan: false,
+//     isInAParentFormattedString: false,
+//     isInADockLayout: false,
+//     isInAGridLayout: false,
+//     isInAnAbsoluteLayout: false,
+//     isInAFlexboxLayout: false,
+// };
 
-function getChildHostContext(parentHostContext: RNSHostContext, child: Instance): RNSHostContext {
-    /*
-     * Given the following, wrapped in a Page: 
-        <flexboxLayout flexDirection={"row"}>
-            <label text={"LABEL"}/>
-            <button text={"BUTTON"}/>
-        </flexboxLayout>
-     * 
-     * When child 'flexboxLayout' passes into here, it will have parentHostContext.isInAFlexboxLayout: false.
-     * We return a HostContext with `"isInAFlexboxLayout": true`.
-     * 
-     * When type 'label' or 'button' passes into here, they will then find that
-     * parentHostContext.isInAFlexboxLayout === true.
-     */
-    console.log(`[getChildHostContext] child: ${child}`);
-    const prevIsInAParentText: boolean = parentHostContext.isInAParentText;
-    const prevIsInAParentSpan: boolean = parentHostContext.isInAParentSpan;
-    const prevIsInAParentFormattedString: boolean = parentHostContext.isInAParentFormattedString;
-    const prevIsInADockLayout: boolean = parentHostContext.isInADockLayout;
-    const prevIsInAnAbsoluteLayout: boolean = parentHostContext.isInAnAbsoluteLayout;
-    const prevIsInAFlexboxLayout: boolean = parentHostContext.isInAFlexboxLayout;
+// /**
+//  * @param parent the parent instance
+//  * @param child the child instance, whose context is determined by the parent
+//  * @returns the host context for the child
+//  */
+// function getChildHostContext(parent: Instance, child: Instance): RNSHostContext {
+//     /*
+//      * Given the following:
+//         <flexboxLayout flexDirection={"row"}>
+//             <label text={"LABEL"}/>
+//             <button text={"BUTTON"}/>
+//         </flexboxLayout>
+//      * 
+//      * When child 'label' passes into here, we want to return a HostContext with `"isInAFlexboxLayout": true`.
+//      */
+//     console.log(`[getChildHostContext] ${parent} > ${child}`);
 
-    const isInAParentText: boolean = child instanceof TextBase;
-    /**
-     * We'll allow Span to support text nodes despite not extending TextBase.
-     * @see https://github.com/shirakaba/react-nativescript/issues/53#issuecomment-612834141
-     */
-    const isInAParentSpan: boolean = child instanceof Span;
-    const isInAParentFormattedString: boolean = child instanceof FormattedString;
-    const isInADockLayout: boolean = child instanceof DockLayout;
-    const isInAGridLayout: boolean = child instanceof GridLayout;
-    const isInAnAbsoluteLayout: boolean = child instanceof AbsoluteLayout;
-    const isInAFlexboxLayout: boolean = child instanceof FlexboxLayout;
+//     const isInAParentText: boolean = parent instanceof TextBase;
+//     /**
+//      * We'll allow Span to support text nodes despite not extending TextBase.
+//      * @see https://github.com/shirakaba/react-nativescript/issues/53#issuecomment-612834141
+//      */
+//     const isInAParentSpan: boolean = parent instanceof Span;
+//     const isInAParentFormattedString: boolean = parent instanceof FormattedString;
+//     const isInADockLayout: boolean = parent instanceof DockLayout;
+//     const isInAGridLayout: boolean = parent instanceof GridLayout;
+//     const isInAnAbsoluteLayout: boolean = parent instanceof AbsoluteLayout;
+//     const isInAFlexboxLayout: boolean = parent instanceof FlexboxLayout;
 
-    /* We do have the option here in future to force ancestry based on a previous ancestor
-     * (e.g. if we want text styles to cascade to all ancestors). Layout props are only with
-     * respect to the immediate parent, however, so no need to do anything special for those.
-     *
-     * Here we avoid recreating an object that happens to deep-equal parentHostContext.
-     */
-    if (
-        prevIsInAParentText === isInAParentText &&
-        prevIsInAParentSpan === isInAParentSpan &&
-        prevIsInAParentFormattedString === isInAParentFormattedString &&
-        prevIsInADockLayout === isInADockLayout &&
-        prevIsInADockLayout === isInAGridLayout &&
-        prevIsInAnAbsoluteLayout === isInAnAbsoluteLayout &&
-        prevIsInAFlexboxLayout === isInAFlexboxLayout
-    ) {
-        return parentHostContext;
-    } else {
-        return {
-            isInAParentText,
-            isInAParentSpan,
-            isInAParentFormattedString,
-            isInADockLayout,
-            isInAGridLayout,
-            isInAnAbsoluteLayout,
-            isInAFlexboxLayout,
-        };
-    }
-};
+//     return {
+//         isInAParentText,
+//         isInAParentSpan,
+//         isInAParentFormattedString,
+//         isInADockLayout,
+//         isInAGridLayout,
+//         isInAnAbsoluteLayout,
+//         isInAFlexboxLayout,
+//     };
+// };
 
 // declare module "./index" {
 // 	interface EventMap extends GlobalEventHandlersEventMap {}
 // }
 
 // TODO @bikeshaving: create an allowlist/blocklist of props
-function updateProps(el: Instance, props: Props, newProps: Props, hostContext: RNSHostContext): void {
+function updateProps(
+    el: Instance,
+    props: Props,
+    newProps: Props,
+    // hostContext: RNSHostContext
+): void {
     for (const name in { ...props, ...newProps }) {
         const value = props[name];
         const newValue = newProps[name];
@@ -122,7 +105,7 @@ function updateProps(el: Instance, props: Props, newProps: Props, hostContext: R
             name,
             newValue,
             false,
-            rootHostContext // TODO @shirakaba: implement correct RNS Host Context rather than default one.
+            // hostContext // TODO @shirakaba: If Crank Native ever supports React-style Host Context, we could do this part 'properly'.
         );
     }
 }
@@ -478,12 +461,13 @@ export const env: Environment<Instance> = {
             let children: Array<View | string> = [];
             let nextChildren: Array<View | string>;
             for ({ children: nextChildren, ...nextProps } of this) {
-                const parent: Instance|undefined = node.parent;
+                /* FIXME: the parent doesn't get assigned for the first time until updateChildren().
+                 *        so the hostContext can only be understood from then. */
+                // const parent: Instance|undefined = node.parent;
                 // const hostContext: RNSHostContext = parent ? 
-                //     {} :
+                //     getChildHostContext(parent, node) : 
                 //     rootHostContext;
-                // const hostContext: RNSHostContext = getChildHostContext()
-                updateProps(node, props, nextProps, rootHostContext);
+                updateProps(node, props, nextProps/*, hostContext */);
                 props = nextProps;
                 if (children.length > 0 || nextChildren.length > 0) {
                     updateChildren(node, nextChildren);
