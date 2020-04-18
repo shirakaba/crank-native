@@ -28,6 +28,10 @@ import {
     Builder,
     TextBase,
     Span,
+    FormattedString,
+    DockLayout,
+    AbsoluteLayout,
+    FlexboxLayout,
 } from "@nativescript/core";
 import { elementMap } from "./nativescriptInterface/elementRegistry";
 
@@ -41,12 +45,75 @@ const rootHostContext: RNSHostContext = {
     isInAFlexboxLayout: false,
 };
 
+function getChildHostContext(parentHostContext: RNSHostContext, child: Instance): RNSHostContext {
+    /*
+     * Given the following, wrapped in a Page: 
+        <flexboxLayout flexDirection={"row"}>
+            <label text={"LABEL"}/>
+            <button text={"BUTTON"}/>
+        </flexboxLayout>
+     * 
+     * When child 'flexboxLayout' passes into here, it will have parentHostContext.isInAFlexboxLayout: false.
+     * We return a HostContext with `"isInAFlexboxLayout": true`.
+     * 
+     * When type 'label' or 'button' passes into here, they will then find that
+     * parentHostContext.isInAFlexboxLayout === true.
+     */
+    console.log(`[getChildHostContext] child: ${child}`);
+    const prevIsInAParentText: boolean = parentHostContext.isInAParentText;
+    const prevIsInAParentSpan: boolean = parentHostContext.isInAParentSpan;
+    const prevIsInAParentFormattedString: boolean = parentHostContext.isInAParentFormattedString;
+    const prevIsInADockLayout: boolean = parentHostContext.isInADockLayout;
+    const prevIsInAnAbsoluteLayout: boolean = parentHostContext.isInAnAbsoluteLayout;
+    const prevIsInAFlexboxLayout: boolean = parentHostContext.isInAFlexboxLayout;
+
+    const isInAParentText: boolean = child instanceof TextBase;
+    /**
+     * We'll allow Span to support text nodes despite not extending TextBase.
+     * @see https://github.com/shirakaba/react-nativescript/issues/53#issuecomment-612834141
+     */
+    const isInAParentSpan: boolean = child instanceof Span;
+    const isInAParentFormattedString: boolean = child instanceof FormattedString;
+    const isInADockLayout: boolean = child instanceof DockLayout;
+    const isInAGridLayout: boolean = child instanceof GridLayout;
+    const isInAnAbsoluteLayout: boolean = child instanceof AbsoluteLayout;
+    const isInAFlexboxLayout: boolean = child instanceof FlexboxLayout;
+
+    /* We do have the option here in future to force ancestry based on a previous ancestor
+     * (e.g. if we want text styles to cascade to all ancestors). Layout props are only with
+     * respect to the immediate parent, however, so no need to do anything special for those.
+     *
+     * Here we avoid recreating an object that happens to deep-equal parentHostContext.
+     */
+    if (
+        prevIsInAParentText === isInAParentText &&
+        prevIsInAParentSpan === isInAParentSpan &&
+        prevIsInAParentFormattedString === isInAParentFormattedString &&
+        prevIsInADockLayout === isInADockLayout &&
+        prevIsInADockLayout === isInAGridLayout &&
+        prevIsInAnAbsoluteLayout === isInAnAbsoluteLayout &&
+        prevIsInAFlexboxLayout === isInAFlexboxLayout
+    ) {
+        return parentHostContext;
+    } else {
+        return {
+            isInAParentText,
+            isInAParentSpan,
+            isInAParentFormattedString,
+            isInADockLayout,
+            isInAGridLayout,
+            isInAnAbsoluteLayout,
+            isInAFlexboxLayout,
+        };
+    }
+};
+
 // declare module "./index" {
 // 	interface EventMap extends GlobalEventHandlersEventMap {}
 // }
 
 // TODO @bikeshaving: create an allowlist/blocklist of props
-function updateProps(el: Instance, props: Props, newProps: Props): void {
+function updateProps(el: Instance, props: Props, newProps: Props, hostContext: RNSHostContext): void {
     for (const name in { ...props, ...newProps }) {
         const value = props[name];
         const newValue = newProps[name];
@@ -411,7 +478,12 @@ export const env: Environment<Instance> = {
             let children: Array<View | string> = [];
             let nextChildren: Array<View | string>;
             for ({ children: nextChildren, ...nextProps } of this) {
-                updateProps(node, props, nextProps);
+                const parent: Instance|undefined = node.parent;
+                // const hostContext: RNSHostContext = parent ? 
+                //     {} :
+                //     rootHostContext;
+                // const hostContext: RNSHostContext = getChildHostContext()
+                updateProps(node, props, nextProps, rootHostContext);
                 props = nextProps;
                 if (children.length > 0 || nextChildren.length > 0) {
                     updateChildren(node, nextChildren);
