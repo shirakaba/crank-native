@@ -35,6 +35,7 @@ import {
 } from "@nativescript/core";
 import { elementMap } from "./nativescriptInterface/elementRegistry";
 import * as console from "./Logger";
+import { formattedTextProperty } from "tns-core-modules/ui/text-base/text-base";
 
 // const rootHostContext: RNSHostContext = {
 //     isInAParentText: false,
@@ -142,6 +143,14 @@ function appendChild(parentInstance: Instance, child: Instance | TextInstance): 
         console.log(`[appendChild()] (Page receiving ActionBar) ${parentInstance} > ${child}`);
         parentInstance.actionBar = child;
         return;
+    } else if (child instanceof FormattedString) {
+        if(parentInstance instanceof TextBase){
+            console.log(`[appendChild()] (TextBase receiving FormattedString) ${parentInstance} > ${child}`);
+            parentInstance.formattedText = child;
+        } else {
+            console.log(`[appendChild()] (Got FormattedString child, but not for a TextBase parent, so shall no-op) ${parentInstance} > ${child}`);
+        }
+        return;
     } else if (isASingleChildContainer(parentInstance)) {
         console.log(`[appendChild()] (single-child container) ${parentInstance} > ${child}`);
         /* These elements were originally designed to hold one element only:
@@ -212,7 +221,15 @@ function insertBefore(
     //     );
     // }
 
-    if (parentInstance instanceof LayoutBase) {
+    if (child instanceof FormattedString) {
+        if(parentInstance instanceof TextBase){
+            console.log(`[HostConfig.insertBefore()] (TextBase receiving FormattedString); I only support a single child, so we'll delete any incumbent. ${parentInstance} > ${child}`);
+            parentInstance.formattedText = child;
+        } else {
+            console.log(`[HostConfig.insertBefore()] (Got FormattedString child, but not for a TextBase parent, so shall no-op) ${parentInstance} > ${child}`);
+        }
+        return;
+    } else if (parentInstance instanceof LayoutBase) {
         /* TODO: implement this for GridLayout, if feeling brave! An example use case (and test case) would help. */
         if (parentInstance instanceof GridLayout) {
             console.warn(
@@ -280,6 +297,14 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
 
     if (child instanceof Page) {
         console.warn(`[remove()] Page was never a real child in the first place, so no-op. ${parent} x ${child}`);
+        return;
+    } else if (child instanceof FormattedString) {
+        if(parent instanceof TextBase){
+            console.log(`[HostConfig.insertBefore()] (TextBase receiving FormattedString); I only support a single child, so we'll delete any incumbent. ${parent} > ${child}`);
+            parent.formattedText = formattedTextProperty.defaultValue;
+        } else {
+            console.log(`[HostConfig.insertBefore()] (Got FormattedString child, but not for a TextBase parent, so shall no-op) ${parent} > ${child}`);
+        }
         return;
     } else if (isASingleChildContainer(parent)) {
         console.log(`[removeChild()] instance of single-child parent: ${parent} x ${child}`);
