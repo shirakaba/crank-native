@@ -1,6 +1,6 @@
 {
   "name": "crank-native",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A Crank renderer for iOS and Android apps, based on NativeScript.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
