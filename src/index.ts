@@ -1,5 +1,5 @@
 import type { View } from "@nativescript/core";
-import type { Element, Child } from "@bikeshaving/crank/cjs";
+import type { Element, Children, Key } from "@bikeshaving/crank/cjs";
 import type { ActionBarProps, ActionItemProps, ActivityIndicatorProps, ButtonProps, ContentViewProps, DatePickerProps, FormattedStringProps, SpanProps, HtmlViewProps, ImageProps, LabelProps, AbsoluteLayoutProps, DockLayoutProps, FlexboxLayoutProps, GridLayoutProps, StackLayoutProps, WrapLayoutProps, ListPickerProps, ListViewProps, NavigationButtonProps, PlaceholderProps, ProgressProps, ScrollViewProps, SearchBarProps, SegmentedBarProps, SegmentedBarItemProps, SliderProps, SwitchProps, TabViewProps, TabViewItemProps, TextViewProps, TextFieldProps, TimePickerProps, WebViewProps, FrameProps, PageProps } from "./nativescriptInterface/NativeScriptComponentTypings";
 import { renderer } from "./ns";
 import { Application } from "@nativescript/core";
@@ -33,47 +33,55 @@ export function start(App: Element, rootView: View): void {
     });
 }
 
-type PropsWithChildren<P> = P & { children?: Child };
+/**
+ * Based on the "Props" interface in Crank Native, but removing the index type.
+ */
+interface NativeScriptAttributes {
+    "crank-key"?: Key;
+    children?: Children;
+}
+type NativeScriptProps<T> = NativeScriptAttributes & T;
+// type PropsWithChildren<P> = P & { children?: Children };
 
 declare global {
 	module JSX {
 		interface IntrinsicElements {
-            actionBar: PropsWithChildren<ActionBarProps>,
-            actionItem: PropsWithChildren<ActionItemProps>,
-            activityIndicator: PropsWithChildren<ActivityIndicatorProps>,
-            button: PropsWithChildren<ButtonProps>,
-            contentView: PropsWithChildren<ContentViewProps>,
-            datePicker: PropsWithChildren<DatePickerProps>,
-            formattedString: PropsWithChildren<FormattedStringProps>,
-            span: PropsWithChildren<SpanProps>,
-            htmlView: PropsWithChildren<HtmlViewProps>,
-            image: PropsWithChildren<ImageProps>,
-            label: PropsWithChildren<LabelProps>,
-            absoluteLayout: PropsWithChildren<AbsoluteLayoutProps>,
-            dockLayout: PropsWithChildren<DockLayoutProps>,
-            flexboxLayout: PropsWithChildren<FlexboxLayoutProps>,
-            gridLayout: PropsWithChildren<GridLayoutProps>,
-            stackLayout: PropsWithChildren<StackLayoutProps>,
-            wrapLayout: PropsWithChildren<WrapLayoutProps>,
-            listPicker: PropsWithChildren<ListPickerProps>,
-            listView: PropsWithChildren<ListViewProps>,
-            navigationButton: PropsWithChildren<NavigationButtonProps>,
-            placeholder: PropsWithChildren<PlaceholderProps>,
-            progress: PropsWithChildren<ProgressProps>,
-            scrollView: PropsWithChildren<ScrollViewProps>,
-            searchBar: PropsWithChildren<SearchBarProps>,
-            segmentedBar: PropsWithChildren<SegmentedBarProps>,
-            segmentedBarItem: PropsWithChildren<SegmentedBarItemProps>,
-            slider: PropsWithChildren<SliderProps>,
-            switch: PropsWithChildren<SwitchProps>,
-            tabView: PropsWithChildren<TabViewProps>,
-            tabViewItem: PropsWithChildren<TabViewItemProps>,
-            textView: PropsWithChildren<TextViewProps>,
-            textField: PropsWithChildren<TextFieldProps>,
-            timePicker: PropsWithChildren<TimePickerProps>,
-            webView: PropsWithChildren<WebViewProps>,
-            frame: PropsWithChildren<FrameProps>,
-            page: PropsWithChildren<PageProps>,
+            actionBar: NativeScriptProps<Partial<ActionBarProps>>,
+            actionItem: NativeScriptProps<Partial<ActionItemProps>>,
+            activityIndicator: NativeScriptProps<Partial<ActivityIndicatorProps>>,
+            button: NativeScriptProps<Partial<ButtonProps>>,
+            contentView: NativeScriptProps<Partial<ContentViewProps>>,
+            datePicker: NativeScriptProps<Partial<DatePickerProps>>,
+            formattedString: NativeScriptProps<Partial<FormattedStringProps>>,
+            span: NativeScriptProps<Partial<SpanProps>>,
+            htmlView: NativeScriptProps<Partial<HtmlViewProps>>,
+            image: NativeScriptProps<Partial<ImageProps>>,
+            label: NativeScriptProps<Partial<LabelProps>>,
+            absoluteLayout: NativeScriptProps<Partial<AbsoluteLayoutProps>>,
+            dockLayout: NativeScriptProps<Partial<DockLayoutProps>>,
+            flexboxLayout: NativeScriptProps<Partial<FlexboxLayoutProps>>,
+            gridLayout: NativeScriptProps<Partial<GridLayoutProps>>,
+            stackLayout: NativeScriptProps<Partial<StackLayoutProps>>,
+            wrapLayout: NativeScriptProps<Partial<WrapLayoutProps>>,
+            listPicker: NativeScriptProps<Partial<ListPickerProps>>,
+            listView: NativeScriptProps<Partial<ListViewProps>>,
+            navigationButton: NativeScriptProps<Partial<NavigationButtonProps>>,
+            placeholder: NativeScriptProps<Partial<PlaceholderProps>>,
+            progress: NativeScriptProps<Partial<ProgressProps>>,
+            scrollView: NativeScriptProps<Partial<ScrollViewProps>>,
+            searchBar: NativeScriptProps<Partial<SearchBarProps>>,
+            segmentedBar: NativeScriptProps<Partial<SegmentedBarProps>>,
+            segmentedBarItem: NativeScriptProps<Partial<SegmentedBarItemProps>>,
+            slider: NativeScriptProps<Partial<SliderProps>>,
+            switch: NativeScriptProps<Partial<SwitchProps>>,
+            tabView: NativeScriptProps<Partial<TabViewProps>>,
+            tabViewItem: NativeScriptProps<Partial<TabViewItemProps>>,
+            textView: NativeScriptProps<Partial<TextViewProps>>,
+            textField: NativeScriptProps<Partial<TextFieldProps>>,
+            timePicker: NativeScriptProps<Partial<TimePickerProps>>,
+            webView: NativeScriptProps<Partial<WebViewProps>>,
+            frame: NativeScriptProps<Partial<FrameProps>>,
+            page: NativeScriptProps<Partial<PageProps>>,
 		}
 
 		interface ElementChildrenAttribute {
