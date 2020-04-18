@@ -238,6 +238,14 @@ export function setValueForProperty(
     } else if (name === "__rns__nodeTreeRole") {
         console.log(`[PropOp] got node-tree role`);
         instance.set(name, value === rnsDeletedPropValue ? false : value);
+    } else if(name.length > 2 && name.startsWith("on") && value === rnsDeletedPropValue || typeof value === "function") {
+        const eventName: string = name[2].toLowerCase() + name.slice(3);
+        console.log(`[PropOp] got suspected event listener "${eventName}" (from name "${name}")`);
+        if(value === rnsDeletedPropValue){
+            instance.off(eventName);
+        } else {
+            instance.on(eventName, value);
+        }
     } else {
         /* FIXME: ensure that we're only calling instance.set() for a valid View/Observable property;
          * many props, e.g. "frameRateMs", may purely be for the use of custom components. */
