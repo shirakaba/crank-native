@@ -300,10 +300,10 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
         return;
     } else if (child instanceof FormattedString) {
         if(parent instanceof TextBase){
-            console.log(`[HostConfig.insertBefore()] (TextBase receiving FormattedString); I only support a single child, so we'll delete any incumbent. ${parent} > ${child}`);
+            console.log(`[removeChild()] (TextBase removing FormattedString); I only support a single child, so we'll delete any incumbent. ${parent} x ${child}`);
             parent.formattedText = formattedTextProperty.defaultValue;
         } else {
-            console.log(`[HostConfig.insertBefore()] (Got FormattedString child, but not for a TextBase parent, so shall no-op) ${parent} > ${child}`);
+            console.log(`[removeChild()] (Got FormattedString child, but not for a TextBase parent, so shall no-op) ${parent} x ${child}`);
         }
         return;
     } else if (isASingleChildContainer(parent)) {
