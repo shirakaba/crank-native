@@ -1,5 +1,5 @@
-import { AbsoluteLayout, ActionBar, ActionItem, NavigationButton, ActivityIndicator, Button, Color, ContentView, DatePicker, DockLayout, EditableTextBase, FlexboxLayout, Frame, GridLayout, HtmlView, Image, Label, LayoutBase, ListPicker, ListView, Observable, Page, Placeholder, Progress, ProxyViewContainer, Repeater, ScrollView, SearchBar, SegmentedBar, SegmentedBarItem, Slider, StackLayout, Style, Switch, TabView, TabViewItem, TextBase, TextField, TextView, TimePicker, View, ViewBase, WebView, WrapLayout, Span, FormattedString, EventData } from "@nativescript/core";
-import { ContainerView } from "tns-core-modules/ui/core/view/view";
+import type { AbsoluteLayout, ActionBar, ActionItem, NavigationButton, ActivityIndicator, Button, Color, ContentView, DatePicker, DockLayout, EditableTextBase, FlexboxLayout, Frame, GridLayout, HtmlView, Image, Label, LayoutBase, ListPicker, ListView, Observable, Page, Placeholder, Progress, ProxyViewContainer, Repeater, ScrollView, SearchBar, SegmentedBar, SegmentedBarItem, Slider, StackLayout, Style, Switch, TabView, TabViewItem, TextBase, TextField, TextView, TimePicker, View, ViewBase, WebView, WrapLayout, Span, FormattedString, EventData } from "@nativescript/core";
+import type { ContainerView } from "tns-core-modules/ui/core/view/view";
 import * as console from "../Logger";
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
