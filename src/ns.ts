@@ -180,6 +180,11 @@ function appendChild(parentInstance: Instance, child: Instance | TextInstance): 
     } else if (parentInstance instanceof TabViewItem) {
         console.log(`[appendChild()] (instance of TabViewItem) ${parentInstance} > ${child}`);
         parentInstance.view = child as View;
+    } else if (parentInstance instanceof FormattedString) {
+        if(child instanceof Span){
+            console.log(`[appendChild()] FormattedString > Span`);
+            parentInstance.spans.push(child);
+        }
     } else {
         console.log(`[appendChild()] (default clause) ${parentInstance} > ${child}`);
         parentInstance._addView(child);
@@ -239,6 +244,12 @@ function insertBefore(
                 `[HostConfig.insertBefore] calculated atIndex as ${atIndex}; shall call: ${parentInstance}.insertChild(${child}, ${atIndex})`
             );
             parentInstance.insertChild(child as View, atIndex);
+        }
+    } else if (parentInstance instanceof FormattedString) {
+        if(child instanceof Span && beforeChild instanceof Span){
+            console.log(`[HostConfig.insertBefore] FormattedString > Span`);
+            const beforeChildIndex: number = parentInstance.spans.indexOf(beforeChild);
+            parentInstance.spans.splice(beforeChildIndex, 0); // TODO: check for off-by-one error
         }
     } else {
         console.warn(
@@ -331,13 +342,13 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
             `[removeChild()] Detaching view from TabViewItem not supported in NativeScript Core, so no-op: ${parent} x ${child}`
         );
         return;
-        /* FormattedString > Span case seems to be handled just fine by default clauses (somehow) */
-        // } else if (parent instanceof FormattedString) {
-        //     if(child instanceof Span){
-        //         console.log(`[removeChild()] FormattedString x Span`);
-        //         const childIndex: number = parent.spans.indexOf(child);
-        //         parent.spans.splice(childIndex, 1);
-        //     }
+    /* FormattedString > Span case seems to be handled just fine by default clause in RNS (somehow), but not Crank Native */
+    } else if (parent instanceof FormattedString) {
+        if(child instanceof Span){
+            console.log(`[removeChild()] FormattedString x Span`);
+            const childIndex: number = parent.spans.indexOf(child);
+            parent.spans.splice(childIndex, 1);
+        }
     } else {
         console.log(`[removeChild()] default clause: ${parent} x ${child}`);
         parent._removeView(child);
@@ -347,8 +358,7 @@ function removeChild(parent: Instance, child: Instance | TextInstance): void {
 // TODO: improve this algorithm
 // https://stackoverflow.com/questions/59418120/what-is-the-most-efficient-way-to-update-the-childnodes-of-a-dom-node-with-an-ar
 function updateChildren(el: Instance, children: Array<View | string>): void {
-    // TODO @shirakaba: re-implement for NativeScript!
-
+    console.log(`[updateChildren] 1 ${el} > ${children}`);
     const oldChildren = [];
     /* Yes, there is no el.length for ViewBase. There is _childrenCount() for LayoutBase, however. */
     el.eachChild((child: ViewBase) => {
@@ -356,7 +366,10 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
         return true;
     });
 
+    console.log(`[updateChildren] 2 oldChildren`, oldChildren);
+
     if (oldChildren.length === 0) {
+        console.log(`[updateChildren] 3a oldChildren was length 0`);
         // const fragment = new ProxyViewContainer();
         const childrenToAdd = [];
         for (let child of children) {
@@ -378,16 +391,22 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
          * I'll use my custom appendChild() implementation instead. */
         // appendChild(el, fragment);
 
+        console.log(`[updateChildren] 4a childrenToAdd`, childrenToAdd);
+
         childrenToAdd.forEach((child) => {
             appendChild(el, child);
         });
 
+        console.log(`[updateChildren] 5a children all added`);
         return;
     }
+
+    console.log(`[updateChildren] 3b multiple oldChildren`);
 
     let i: number = 0;
     let oldChild: Instance | null = oldChildren[i] || null;
     for (const newChild of children) {
+        console.log(`[updateChildren] 4b for ${newChild} of ${children}`);
         if (oldChild === null) {
             if (typeof newChild === "string" || typeof newChild === "number") {
                 if (el instanceof TextBase || el instanceof Span) {
@@ -487,6 +506,7 @@ export const env: Environment<Instance> = {
         }
     },
     *[Portal](this: HostContext, { root }): Generator<Instance> {
+        console.log(`[Portal] 1`);
         if (root == null) {
             throw new TypeError("Portal element is missing root node");
         }
@@ -498,14 +518,17 @@ export const env: Environment<Instance> = {
                 }
 
                 if (root !== newRoot) {
+                    console.log(`[Portal] 2`);
                     updateChildren(root, []);
                     root = newRoot;
                 }
+                console.log(`[Portal] 3`);
 
                 updateChildren(root, children);
                 yield root;
             }
         } finally {
+            console.log(`[Portal] 4`);
             updateChildren(root, []);
         }
     },
