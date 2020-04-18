@@ -1,4 +1,4 @@
-import { AbsoluteLayout, ActionBar, ActionItem, NavigationButton, ActivityIndicator, Animation, Button, Color, ContentView, DatePicker, DockLayout, EditableTextBase, FlexboxLayout, Frame, GridLayout, HtmlView, Image, Label, LayoutBase, ListPicker, ListView, Observable, Page, Placeholder, Progress, ProxyViewContainer, Repeater, ScrollView, SearchBar, SegmentedBar, SegmentedBarItem, Slider, StackLayout, Style, Switch, TabView, TabViewItem, TextBase, TextField, TextView, TimePicker, Transition, View, ViewBase, WebView, WrapLayout, Span, FormattedString } from "@nativescript/core";
+import { AbsoluteLayout, ActionBar, ActionItem, NavigationButton, ActivityIndicator, Animation, Button, Color, ContentView, DatePicker, DockLayout, EditableTextBase, FlexboxLayout, Frame, GridLayout, HtmlView, Image, Label, LayoutBase, ListPicker, ListView, Observable, Page, Placeholder, Progress, Repeater, ScrollView, SearchBar, SegmentedBar, SegmentedBarItem, Slider, StackLayout, Style, Switch, TabView, TabViewItem, TextBase, TextField, TextView, TimePicker, Transition, View, ViewBase, WebView, WrapLayout, Span, FormattedString } from "@nativescript/core";
 import { InstanceCreator } from "./HostConfigTypes";
 import * as console from "../Logger";
 
@@ -33,7 +33,6 @@ export const elementMap: ElementMap = {
     navigationButton: () => new NavigationButton(),
     placeholder: () => new Placeholder(),
     progress: () => new Progress(),
-    proxyViewContainer: () => new ProxyViewContainer(),
     scrollView: () => new ScrollView(),
     searchBar: () => new SearchBar(),
     segmentedBar: () => new SegmentedBar(),
@@ -86,7 +85,6 @@ export {
     Page,
     Placeholder,
     Progress,
-    ProxyViewContainer,
     Repeater,
     ScrollView,
     SearchBar,
