@@ -99,10 +99,10 @@ It's rather verbose at present, but I'll be improving these things in time.
 - [x] Have completed a NativeScript CLI template, [`tns-template-blank-crank`](https://github.com/shirakaba/tns-template-blank-crank), so that users can initialise apps via NativeScript CLI;
 - [x] Make a sample app;
 - [x] Provide typings for intrinsic elements;
+- [x] ~~Implement ancestor context~~ (wasn't necessary in the end) to support LayoutBase;
 
 ## Roadmap 🛣
 
-* Implement ancestor context to support LayoutBase;
 * Implement event handling;
 * Create a NativeScript Playground template;
 * Write docs;
