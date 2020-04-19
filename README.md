@@ -89,14 +89,14 @@ It's rather verbose at present, but I'll be improving these things in time.
 
 ## Completed so far
 
-- [x] Filled in all the renderer APIs (AKA DOM interface) using React NativeScript's Host Config;
-- [x] Have completed a NativeScript CLI template, [`tns-template-blank-crank`](https://github.com/shirakaba/tns-template-blank-crank), so that users can initialise apps via NativeScript CLI;
+- [x] Fill in all the renderer APIs (AKA DOM interface) using React NativeScript's Host Config;
+- [x] Complete a NativeScript CLI template, [`tns-template-blank-crank`](https://github.com/shirakaba/tns-template-blank-crank), so that users can initialise apps via NativeScript CLI;
 - [x] Make a sample app;
 - [x] Provide typings for intrinsic elements;
 - [x] ~~Implement ancestor context~~ (wasn't necessary in the end) to support LayoutBase;
 - [x] Implement event handling;
+- [x] Create a [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=GtKudF&v=10) (Your Mileage May Vary – this is a best-effort with various limitations until official support from the NativeScript core team comes);
 
 ## Roadmap 🛣
 
-* Create a NativeScript Playground template;
 * Write docs;
