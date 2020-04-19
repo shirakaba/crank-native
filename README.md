@@ -1,7 +1,7 @@
 # Crank Native
 
 <div align="center">
-    <h1>🔧🤖</h1>
+    <h1>🤖</h1>
     <p><em>There is no logo yet</em></p>
 </div>
 
@@ -40,10 +40,7 @@ tns debug ios --no-hmr --debug-brk
 
 ## Documentation
 
-Nothing yet. It's based on React NativeScript, so you can read the [React NativeScript docs](https://react-nativescript.netlify.com/) for now. You can also read the [NativeScript Core](https://docs.nativescript.org/start/introduction) docs, which are equally applicable.
-
-The main difference from React NativeScript is that, while RNS component names have the format `<$ContentView>` (they are class components), Crank Native elements have the format `<contentView>` (they are JSX intrinsic elements).
-
+See the [React NativeScript docs](https://crank-native.netlify.app). You can also read the [NativeScript Core](https://docs.nativescript.org/start/introduction) docs, which give further details about the NativeScript framework that underlies Crank Native.
 
 ## Sample app
 
@@ -77,6 +74,8 @@ But at the very least, you can get a picture for the potential of the framework 
 
 ## Completed so far
 
+All tasks for the initial roadmap are now complete!
+
 - [x] Fill in all the renderer APIs (AKA DOM interface) using React NativeScript's Host Config;
 - [x] Complete a NativeScript CLI template, [`tns-template-blank-crank`](https://github.com/shirakaba/tns-template-blank-crank), so that users can initialise apps via NativeScript CLI;
 - [x] Make a sample app;
@@ -84,7 +83,4 @@ But at the very least, you can get a picture for the potential of the framework 
 - [x] ~~Implement ancestor context~~ (wasn't necessary in the end) to support LayoutBase;
 - [x] Implement event handling;
 - [x] Create a [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=GtKudF&v=10) (Your Mileage May Vary – this is a best-effort with various limitations until official support from the NativeScript core team comes);
-
-## Roadmap 🛣
-
-* Write docs!
+- [x] Write docs!
