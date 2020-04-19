@@ -47,7 +47,7 @@ The main difference from React NativeScript is that, while RNS component names h
 
 ## Sample app
 
-After initialising the sample app, you'll see the following simple component in [`app/components/AppContainer.tsx`](https://github.com/shirakaba/tns-template-blank-crank/blob/master/app/components/AppContainer.tsx):
+After initialising the sample app, you'll see the following simple view, renderered by this code [`app/components/AppContainer.tsx`](https://github.com/shirakaba/tns-template-blank-crank/blob/master/app/components/AppContainer.tsx):
 
 <table>
     <tbody>
