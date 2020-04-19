@@ -40,7 +40,7 @@ tns debug ios --no-hmr --debug-brk
 
 ## Documentation 📖
 
-See the [React NativeScript docs](https://crank-native.netlify.app). You can also read the [NativeScript Core](https://docs.nativescript.org/start/introduction) docs, which give further details about the NativeScript framework that underlies Crank Native.
+See the [Crank Native docs](https://crank-native.netlify.app). You can also read the [NativeScript Core](https://docs.nativescript.org/start/introduction) docs, which give further details about the NativeScript framework that underlies Crank Native.
 
 ## Sample app 🎁
 
