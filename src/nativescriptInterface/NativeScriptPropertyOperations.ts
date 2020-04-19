@@ -23,7 +23,8 @@ import {
 import { isIOS, isAndroid } from "tns-core-modules/platform/platform";
 import * as console from "../Logger";
 import { rnsDeletedPropValue } from "./magicValues";
-import { Instance, HostContext } from "./HostConfigTypes";
+import type { Instance, HostContext } from "./HostConfigTypes";
+import type { MutableRefObject } from "../typings";
 
 /**
  * Code in here referenced from: https://github.com/facebook/react/blob/master/packages/react-dom/src/client/DOMPropertyOperations.js which carries the following copyright:
@@ -105,7 +106,9 @@ export function setValueForProperty(
 
     // const currentValue: unknown = instance.get("name");
 
-    if (name === "class") {
+    if (name === "ref"){
+        (value as MutableRefObject).current = instance;
+    } else if (name === "class") {
         // console.warn(`Note that 'class' is remapped to 'className'.`);
         instance.set("className", value === rnsDeletedPropValue ? classNameProperty.defaultValue : value);
     } else if ((name === "rows" || name === "columns") && instance instanceof GridLayout) {
