@@ -45,9 +45,9 @@ Nothing yet. It's based on React NativeScript, so you can read the [React Native
 The main difference from React NativeScript is that, while RNS component names have the format `<$ContentView>` (they are class components), Crank Native elements have the format `<contentView>` (they are JSX intrinsic elements).
 
 
-## Sample code
+## Sample app
 
-After initialising the sample app, you'll see the following simple component in `app/components/AppContainer.tsx`:
+After initialising the sample app, you'll see the following simple component in [`app/components/AppContainer.tsx`](https://github.com/shirakaba/tns-template-blank-crank/blob/master/app/components/AppContainer.tsx):
 
 <table>
     <tbody>
@@ -59,27 +59,17 @@ After initialising the sample app, you'll see the following simple component in 
     </tbody>
 </table>
 
-The code for that is:
+The code for setting styles is somewhat verbose at present, but I'll be improving these things in time.
 
-```tsx
-/** @jsx createElement */
-import { createElement } from "@bikeshaving/crank/cjs/index";
-import { Color } from "@nativescript/core";
+## Try without setting up your desktop environment (like an Expo Snack)
 
-export default function Greeting({ name = "World" }) {
-    return (
-        <contentView
-            backgroundColor={new Color("yellow")}
-            width={{ value: 100, unit: "%" }}
-            height={{ value: 100, unit: "%" }}
-        >
-            <label fontSize={48} paddingLeft={16}>Hello {name}</label>
-        </contentView>
-    );
-}
-```
+I've hacked together an experimental [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=GtKudF&v=10) pinned at versions `crank-native@0.6.0` and `crank@0.1.0`. You can try it out by scanning a QR code in the [NativeScript Playground](https://apps.apple.com/us/app/nativescript-playground/id1263543946?ls=1) app, which will open it in the [NativeScript Preview](https://apps.apple.com/us/app/nativescript-preview/id1264484702) app.
 
-It's rather verbose at present, but I'll be improving these things in time.
+*Note: Although this does run on iOS, I expect that it doesn't on Android, as the Android version of NativeScript Playground doesn't support the node module resolution trick I'm using to supply the Crank Native dependencies.*
+
+Be warned that the NativeScript core team **do not (yet) officially support** Crank Native, and so this NativeScript Playground boilerplate is explicitly **not** representative of the full potential of either Crank or Crank Native. Some things are very likely to be broken in it (e.g. I would be surprised if async/await and generators work, and that's most of the essence of Crank).
+
+But at the very least, you can get a picture for the potential of the framework for now without having to set up a desktop environment.
 
 ## About Crank
 
@@ -99,4 +89,4 @@ It's rather verbose at present, but I'll be improving these things in time.
 
 ## Roadmap 🛣
 
-* Write docs;
+* Write docs!
