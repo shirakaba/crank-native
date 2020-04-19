@@ -386,7 +386,13 @@ function updateChildren(el: Instance, children: Array<View | string>): void {
     console.log(`[updateChildren] 1 ${el} > ${children}`);
     const oldChildren = [];
     /* Yes, there is no el.length for ViewBase. There is _childrenCount() for LayoutBase, however. */
+    const elInstanceOfPage: boolean = el instanceof Page;
     el.eachChild((child: ViewBase) => {
+        if(elInstanceOfPage && child instanceof ActionBar){
+            // You get an implicit ActionBar child each time a Page is instantiated, that is outside of the control of the renderer.
+            console.log(`[updateChildren] ignoring ActionBar`);
+            return true;
+        }
         oldChildren.push(child);
         return true;
     });
