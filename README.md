@@ -82,5 +82,5 @@ All tasks for the initial roadmap are now complete! 🥳
 - [x] Provide typings for intrinsic elements;
 - [x] ~~Implement ancestor context~~ (wasn't necessary in the end) to support LayoutBase;
 - [x] Implement event handling;
-- [x] Create a [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=GtKudF&v=10) (Your Mileage May Vary – this is a best-effort with various limitations until official support from the NativeScript core team comes);
+- [x] Create a [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=lwOLY2&v=3) (Your Mileage May Vary – this is a best-effort with various limitations until official support from the NativeScript core team comes);
 - [x] Write docs!
