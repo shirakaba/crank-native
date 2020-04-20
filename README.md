@@ -60,9 +60,9 @@ The code for setting styles is somewhat verbose at present, but I'll be improvin
 
 ## Try without setting up your desktop environment (like an Expo Snack) 📲
 
-I've hacked together an experimental [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=lwOLY2&v=1) pinned at versions `crank-native@0.6.0` and `crank@0.1.0`. You can try it out by scanning a QR code in the [NativeScript Playground](https://apps.apple.com/us/app/nativescript-playground/id1263543946?ls=1) app, which will open it in the [NativeScript Preview](https://apps.apple.com/us/app/nativescript-preview/id1264484702) app.
+I've hacked together an experimental [NativeScript Playground template](https://play.nativescript.org/?template=play-react&id=lwOLY2&v=3) pinned at versions `crank-native@0.7.0` and `crank@0.1.0`. You can try it out by scanning a QR code in the [NativeScript Playground](https://apps.apple.com/us/app/nativescript-playground/id1263543946?ls=1) app, which will open it in the [NativeScript Preview](https://apps.apple.com/us/app/nativescript-preview/id1264484702) app.
 
-Be warned that the NativeScript core team **do not (yet) officially support** Crank Native, and so this NativeScript Playground boilerplate is explicitly **not** representative of the full potential of either Crank or Crank Native. Some things are very likely to be broken in it (e.g. I would be surprised if async/await and generators work, and that's most of the essence of Crank).
+Be warned that the NativeScript core team **do not (yet) officially support** Crank Native, and so this NativeScript Playground boilerplate is explicitly **not** representative of the full potential of either Crank or Crank Native. Some things might not yet work completely in it.
 
 But at the very least, you can get a picture for the potential of the framework for now without having to set up a desktop environment.
 
